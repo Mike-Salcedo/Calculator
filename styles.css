@@ -13,12 +13,12 @@ body {
   height: 100vh;
   display: flex;
   justify-content: center;
-  margin-top: 7%;
+  margin-top: 7rem;
   background-color: #ececec;
 }
 .container {
   border: 2px solid black;
-  height: 590px;
+  height: 690px;
   width: 390px;
   display: flex;
   flex-direction: column;
@@ -26,7 +26,7 @@ body {
 
 .top-section {
   width: 100%;
-  height: 26%;
+  height: 10rem;
   background-image: linear-gradient(
     to bottom right,
     #14d6fc,
@@ -50,6 +50,56 @@ body {
 }
 
 .bottom-section {
-  height: 74%;
   background-color: #ffffff;
+
+  height: 100%;
+}
+
+div.buttonsForCalculator {
+  display: flex;
+  flex-wrap: wrap;
+
+  width: 100%;
+}
+
+div.topBtns {
+  display: flex;
+  width: 100%;
+  height: 20%;
+}
+
+button.clear,
+button.delete {
+  flex: 1 1 50%;
+  padding: 1.5rem;
+  /*Styles for buttons*/
+  background-color: #ffffff;
+  text-decoration: none;
+  font-size: 20px;
+  text-decoration: none;
+  border: none;
+}
+
+div.bottomBtns {
+  justify-content: center;
+
+  width: 100%;
+  height: 490px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+button.calculatorBtn {
+  flex: 0 1 25%;
+  /*Styles for buttons*/
+  background-color: #ffffff;
+  text-decoration: none;
+  font-size: 32px;
+  font-weight: 100;
+  border: none;
+}
+
+button:hover {
+  background-color: #b4b1b1;
 }

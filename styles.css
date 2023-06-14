@@ -25,6 +25,7 @@ body {
 }
 
 .top-section {
+  flex: 1 0 auto;
   width: 100%;
   height: 10rem;
   background-image: linear-gradient(
@@ -50,6 +51,7 @@ body {
 }
 
 .bottom-section {
+  flex: 1 1 auto;
   background-color: #ffffff;
 
   height: 100%;
@@ -84,22 +86,30 @@ div.bottomBtns {
   justify-content: center;
 
   width: 100%;
-  height: 490px;
+  height: 453px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
 }
 
 button.calculatorBtn {
-  flex: 0 1 25%;
+  flex: 1 1 25%;
+  height: 25%;
   /*Styles for buttons*/
+
   background-color: #ffffff;
   text-decoration: none;
   font-size: 32px;
   font-weight: 100;
   border: none;
+  transition: 0.3s;
 }
 
 button:hover {
+  background-color: #f0ecec;
+}
+
+button:active {
   background-color: #b4b1b1;
+  transform: translateY(4px);
 }

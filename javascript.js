@@ -38,4 +38,26 @@ function operate(operator, numberOne, numberTwo) {
   }
 }
 
-console.log(operate("*", 2, 7)); // Test for the operate function
+// Targeting the buttons for the calculator
+
+const buttons = document.querySelectorAll(".calculatorBtn");
+
+// we use the .forEach method to iterate through each button
+buttons.forEach((button) => {
+  // and for each one we add a 'click' listener
+  button.addEventListener("click", (e) => {
+    console.log(e.target.id); // Get ID of Clicked Element
+    updateCalculatorScreen(e);
+  });
+});
+
+//Functions that populate the display when you click the number buttons
+
+// Target numbersoperated p tags
+
+const numbersoperated = document.querySelector(".numbersOperated");
+numbersoperated.textContent = `test`;
+
+function updateCalculatorScreen(e) {
+  numbersoperated.textContent = `${e.target.id}`;
+}

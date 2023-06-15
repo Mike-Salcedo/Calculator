@@ -5,12 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="styles.css" />
+    <script src="javascript.js" defer></script>
   </head>
   <body>
     <div class="container">
       <div class="top-section">
         <div class="head">Calulator</div>
-        <div class="output"></div>
+        <div class="output">
+          <p class="numbersOperated">500 - 1600</p>
+          <p class="result">-1600</p>
+        </div>
       </div>
       <div class="bottom-section">
         <div class="buttonsForCalculator">
@@ -20,22 +24,22 @@
           </div>
 
           <div class="bottomBtns">
-            <button class="seven calculatorBtn">7</button>
-            <button class="eight calculatorBtn">8</button>
-            <button class="nine calculatorBtn">9</button>
-            <button class="division calculatorBtn">÷</button>
-            <button class="four calculatorBtn">4</button>
-            <button class="five calculatorBtn">5</button>
-            <button class="six calculatorBtn">6</button>
-            <button class="multiplication calculatorBtn">X</button>
-            <button class="one calculatorBtn">1</button>
-            <button class="two calculatorBtn">2</button>
-            <button class="three calculatorBtn">3</button>
-            <button class="minus calculatorBtn">-</button>
-            <button class="point calculatorBtn">.</button>
-            <button class="zero calculatorBtn">0</button>
-            <button class="equals calculatorBtn">=</button>
-            <button class="plus calculatorBtn">+</button>
+            <button class="calculatorBtn" id="7">7</button>
+            <button class="calculatorBtn" id="8">8</button>
+            <button class="calculatorBtn" id="9">9</button>
+            <button class="calculatorBtn" id="division">÷</button>
+            <button class="calculatorBtn" id="4">4</button>
+            <button class="calculatorBtn" id="5">5</button>
+            <button class="calculatorBtn" id="6">6</button>
+            <button class="calculatorBtn multiplication" id="*">X</button>
+            <button class="calculatorBtn" id="1">1</button>
+            <button class="calculatorBtn" id="2">2</button>
+            <button class="calculatorBtn" id="3">3</button>
+            <button class="calculatorBtn minus" id="-">-</button>
+            <button class="calculatorBtn point" id=".">.</button>
+            <button class="calculatorBtn" id="0">0</button>
+            <button class="calculatorBtn equals" id="=">=</button>
+            <button class="calculatorBtn plus" id="+">+</button>
           </div>
         </div>
       </div>

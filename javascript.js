@@ -1,5 +1,5 @@
 let numberA = []; // Variables for the calculator
-let numberB;
+let numberB = [];
 let operatorSelected;
 
 function add(numberOne, numberTwo) {
@@ -56,31 +56,35 @@ numberButtons.forEach((button) => {
 // Target numbersOperated p tags
 
 let numberAOutput;
+let numberOne;
+let numberTwo;
+let tempNumber = [];
 
 const numbersOperated = document.querySelector(".numbersOperated");
 
 function updateCalculatorScreen(e) {
-  tempNumber.push(e.target.id);
+  if (!e.target.classList.contains("equals")) tempNumber.push(e.target.id);
+
   numbersOperated.textContent = `${tempNumber.join("")}`;
 
   if (numberOne === undefined) {
     numberA = tempNumber.join("");
     console.log(numberA);
 
-    return numberA;
-  } else {
-    numberB = tempNumber.slice(numberA[-1], -1);
-    console.log(numberB);
+    return numberA.replace(/^[0-9]*$/, "");
+  } else if (numberOne !== undefined) {
+    if (!e.target.classList.contains("equals")) numberB.push(e.target.id);
 
-    return numberB;
+    numberTwo = numberB.join("");
+
+    console.log({ numberTwo });
+    return numberTwo.replace(/^[0-9]*$/, "");
   }
 }
 
-// Get numbers to run operations on
+// Get first numbers to run operations on
 
-let tempNumber = [];
-
-function getNumbers(e) {
+function getNumberOne(e) {
   if (e.target.classList.contains("division")) {
     numberOne = numberA.slice(0, -1);
   } else if (e.target.classList.contains("multiplication")) {
@@ -104,9 +108,29 @@ const operatorButton = document.querySelectorAll(".operation");
 
 operatorButton.forEach((button) => {
   button.addEventListener("click", (e) => {
-    getNumbers(e);
+    getNumberOne(e);
+    operate(e);
   });
 });
 
-let numberOne;
-let numberTwo;
+// Make the math work
+
+function operate(e) {
+  if (
+    e.target.classList.contains("equals") &&
+    (numberOne === undefined || numberTwo === undefined)
+  ) {
+    numberOne = undefined;
+    numberTwo = undefined;
+    tempNumber = [];
+    return (numbersOperated.textContent = `Make sure your operating on two numbers`);
+  } else if (
+    e.target.classList.contains("equals") &&
+    numberOne !== undefined &&
+    numberTwo !== undefined
+  ) {
+    for (i = 0; i < 10; i++) {
+      //write code here}
+    }
+  }
+}

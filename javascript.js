@@ -1,7 +1,3 @@
-let numberA = []; // Variables for the calculator
-let numberB = [];
-let operatorSelected;
-
 function add(numberOne, numberTwo) {
   return parseInt(numberOne) + parseInt(numberTwo);
 }
@@ -18,8 +14,6 @@ function divide(numberOne, numberTwo) {
 // Operate function takes an operator and 2 numbers and then calls one of the above functions on the numbers.
 
 function operate(operator, numberOne, numberTwo) {
-  console.log(operator);
-
   switch (operator) {
     case "+":
       return add(numberOne, numberTwo);
@@ -27,10 +21,10 @@ function operate(operator, numberOne, numberTwo) {
     case "-":
       return subtract(numberOne, numberTwo);
 
-    case "*":
+    case "x":
       return multiply(numberOne, numberTwo);
 
-    case "/":
+    case "÷":
       return divide(numberOne, numberTwo);
 
     default:
@@ -48,89 +42,46 @@ numberButtons.forEach((button) => {
   button.addEventListener("click", (e) => {
     // console.log(e.target.id); // Get ID of Clicked Element
     updateCalculatorScreen(e);
+    getNumberOne(e);
   });
 });
 
 //Functions that populate the display when you click the number buttons
 
 // Target numbersOperated p tags
-
-let numberAOutput;
-let numberOne;
+let calculatorScreenOutPut = [];
+let storeOperation;
+let numberOne; // Variables for the calculator
 let numberTwo;
-let tempNumber = [];
+let operatorSelected = ["+", "-", "*", "/"];
+let indexOfOperator;
 
 const numbersOperated = document.querySelector(".numbersOperated");
 
 function updateCalculatorScreen(e) {
-  if (!e.target.classList.contains("equals")) tempNumber.push(e.target.id);
+  calculatorScreenOutPut.push(e.target.id);
 
-  numbersOperated.textContent = `${tempNumber.join("")}`;
-
-  if (numberOne === undefined) {
-    numberA = tempNumber.join("");
-    console.log(numberA);
-
-    return numberA.replace(/^[0-9]*$/, "");
-  } else if (numberOne !== undefined) {
-    if (!e.target.classList.contains("equals")) numberB.push(e.target.id);
-
-    numberTwo = numberB.join("");
-
-    console.log({ numberTwo });
-    return numberTwo.replace(/^[0-9]*$/, "");
-  }
+  storeOperation = calculatorScreenOutPut;
+  numbersOperated.textContent = calculatorScreenOutPut.join(""); // Output to calculator screen
 }
 
-// Get first numbers to run operations on
+// Getting the index of the operator so i can know where to cut the numbers at
 
-function getNumberOne(e) {
-  if (e.target.classList.contains("division")) {
-    numberOne = numberA.slice(0, -1);
-  } else if (e.target.classList.contains("multiplication")) {
-    numberOne = numberA.slice(0, -1);
-  } else if (e.target.classList.contains("minus")) {
-    numberOne = numberA.slice(0, -1);
-  } else if (e.target.classList.contains("equals")) {
-    numberOne = numberA.slice(0, -1);
-  } else if (e.target.classList.contains("plus")) {
-    numberOne = numberA.slice(0, -1);
-  }
-}
+// Function to get the numbers
 
-// numberA = numberAOutput.split();
-
-// Make the calculator work! You’ll need to store the first number that is input into the calculator when a user presses an operator, and also save which operation has been chosen and then operate() on them when the user presses the “=” key.
-
-const operatorButton = document.querySelectorAll(".operation");
-
-// function operate(numberOne = numberAOutput) {}
-
-operatorButton.forEach((button) => {
-  button.addEventListener("click", (e) => {
-    getNumberOne(e);
-    operate(e);
-  });
-});
-
-// Make the math work
-
-function operate(e) {
+function getNumbers(e) {
   if (
-    e.target.classList.contains("equals") &&
-    (numberOne === undefined || numberTwo === undefined)
+    (e.target.id === "*" ||
+      e.target.id === "+" ||
+      e.target.id === "-" ||
+      e.target.id === "/") &&
+    numberOne == undefined
   ) {
-    numberOne = undefined;
-    numberTwo = undefined;
-    tempNumber = [];
-    return (numbersOperated.textContent = `Make sure your operating on two numbers`);
-  } else if (
-    e.target.classList.contains("equals") &&
-    numberOne !== undefined &&
-    numberTwo !== undefined
-  ) {
-    for (i = 0; i < 10; i++) {
-      //write code here}
-    }
+    numberOne = storeOperation.slice(0, -1).join("");
+    return (indexOfOperator = storeOperation.length);
+  }
+
+  if (numberOne !== undefined) {
+    return (numberTwo = storeOperation.slice(indexOfOperator).join(""));
   }
 }

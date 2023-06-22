@@ -100,11 +100,12 @@ function getIndexOfOperator() {
 
 // function to do the operation
 
+
 function makeTheMath(e) {
   if (e.target.id === "=" && numberOne != undefined && numberTwo != undefined) {
     result = operate(storeOperation[indexOfOperator], numberOne, numberTwo);
     outputResult.textContent = `${result}`;
-    numberOne = parseInt(result);
+    numberOne = result.toString();
     calculatorScreenOutPut = [result];
 
     numberTwo = storeOperation
@@ -117,3 +118,21 @@ function makeTheMath(e) {
 // grab the result element
 
 const outputResult = document.querySelector(".result");
+
+// Clear the whole calculator
+
+const clearButton = document.querySelector(".clear");
+
+clearButton.addEventListener("click", (e) => clear(e));
+
+function clear(e) {
+  if (e.target.classList.contains("clear")) {
+    outputResult.textContent = "";
+    numbersOperated.textContent = "0";
+    calculatorScreenOutPut = [];
+    storeOperation = undefined;
+    numberOne = undefined; // Variables for the calculator
+    numberTwo = undefined;
+    indexOfOperator = undefined;
+  }
+}

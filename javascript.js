@@ -21,10 +21,10 @@ function operate(operator, numberOne, numberTwo) {
     case "-":
       return subtract(numberOne, numberTwo);
 
-    case "x":
+    case "*":
       return multiply(numberOne, numberTwo);
 
-    case "÷":
+    case "/":
       return divide(numberOne, numberTwo);
 
     default:
@@ -42,7 +42,9 @@ numberButtons.forEach((button) => {
   button.addEventListener("click", (e) => {
     // console.log(e.target.id); // Get ID of Clicked Element
     updateCalculatorScreen(e);
-    getNumberOne(e);
+    getNumbers(e);
+    makeTheMath(e);
+    getIndexOfOperator();
   });
 });
 
@@ -59,7 +61,7 @@ let indexOfOperator;
 const numbersOperated = document.querySelector(".numbersOperated");
 
 function updateCalculatorScreen(e) {
-  calculatorScreenOutPut.push(e.target.id);
+  if (e.target.id !== "=") calculatorScreenOutPut.push(e.target.id);
 
   storeOperation = calculatorScreenOutPut;
   numbersOperated.textContent = calculatorScreenOutPut.join(""); // Output to calculator screen
@@ -75,13 +77,43 @@ function getNumbers(e) {
       e.target.id === "+" ||
       e.target.id === "-" ||
       e.target.id === "/") &&
-    numberOne == undefined
+    numberOne === undefined
   ) {
     numberOne = storeOperation.slice(0, -1).join("");
-    return (indexOfOperator = storeOperation.length);
   }
 
   if (numberOne !== undefined) {
-    return (numberTwo = storeOperation.slice(indexOfOperator).join(""));
+    numberTwo = storeOperation
+      .slice(indexOfOperator)
+      .join("")
+      .replace(/\D/g, "");
   }
 }
+
+// function to get the index of the operator symbol
+
+function getIndexOfOperator() {
+  if (numberOne === undefined) {
+    indexOfOperator = storeOperation.length;
+  }
+}
+
+// function to do the operation
+
+function makeTheMath(e) {
+  if (e.target.id === "=" && numberOne != undefined && numberTwo != undefined) {
+    result = operate(storeOperation[indexOfOperator], numberOne, numberTwo);
+    outputResult.textContent = `${result}`;
+    numberOne = parseInt(result);
+    calculatorScreenOutPut = [result];
+
+    numberTwo = storeOperation
+      .slice(indexOfOperator)
+      .join("")
+      .replace(/\D/g, "");
+  }
+}
+
+// grab the result element
+
+const outputResult = document.querySelector(".result");

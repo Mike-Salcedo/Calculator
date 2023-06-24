@@ -43,6 +43,7 @@ numberButtons.forEach((button) => {
     // console.log(e.target.id); // Get ID of Clicked Element
     updateCalculatorScreen(e);
     getNumbers(e);
+    getOperator();
     makeTheMath(e);
     getIndexOfOperator();
   });
@@ -55,8 +56,9 @@ let calculatorScreenOutPut = [];
 let storeOperation;
 let numberOne; // Variables for the calculator
 let numberTwo;
-let operatorSelected = ["+", "-", "*", "/"];
+let operatorSelected;
 let indexOfOperator;
+let result;
 
 const numbersOperated = document.querySelector(".numbersOperated");
 
@@ -73,39 +75,80 @@ function updateCalculatorScreen(e) {
 
 function getNumbers(e) {
   if (
-    (e.target.id === "*" ||
-      e.target.id === "+" ||
-      e.target.id === "-" ||
-      e.target.id === "/") &&
-    numberOne === undefined
+    e.target.id === "*" ||
+    e.target.id === "+" ||
+    e.target.id === "-" ||
+    e.target.id === "/"
   ) {
-    numberOne = storeOperation.slice(0, -1).join("");
+    numberOne = storeOperation.slice(0, indexOfOperator).join("");
   }
 
-  if (numberOne !== undefined) {
+  if (
+    numberOne !== undefined &&
+    (storeOperation[indexOfOperator] === "*" ||
+      storeOperation[indexOfOperator] === "/" ||
+      storeOperation[indexOfOperator] === "+" ||
+      storeOperation[indexOfOperator] === "-")
+  ) {
     numberTwo = storeOperation
       .slice(indexOfOperator)
       .join("")
       .replace(/\D/g, "");
   }
+
+
 }
 
 // function to get the index of the operator symbol
 
 function getIndexOfOperator() {
-  if (numberOne === undefined) {
-    indexOfOperator = storeOperation.length;
+  if (numberOne !== undefined) {
+    indexOfOperator = storeOperation.indexOf(operatorSelected);
   }
+
+  // return (indexOfOperator = storeOperation
+  //   .map((element) => {
+  //     if (
+  //       element === "*" ||
+  //       element === "/" ||
+  //       element === "+" ||
+  //       element === "-"
+  //     ) {
+  //       return operatorSelected.indexOf(element);
+  //     }
+  //   })
+  //   .filter((element) => {
+  //     return element != undefined;
+  //   }));
 }
 
-// function to do the operation
+// function to get operator
 
+const getOperator = () => {
+  if (storeOperation != undefined)
+    storeOperation.filter((element) => {
+      if (
+        element === "*" ||
+        element === "/" ||
+        element === "+" ||
+        element === "-"
+      )
+        return (operatorSelected = element);
+    });
+};
+
+operatorSelected = getOperator();
+
+// grab the result element
+
+const outputResult = document.querySelector(".result");
+// function to do the operation
 
 function makeTheMath(e) {
   if (e.target.id === "=" && numberOne != undefined && numberTwo != undefined) {
-    result = operate(storeOperation[indexOfOperator], numberOne, numberTwo);
+    result = operate(operatorSelected, numberOne, numberTwo);
     outputResult.textContent = `${result}`;
-    numberOne = result.toString();
+    // numberOne = result;
     calculatorScreenOutPut = [result];
 
     numberTwo = storeOperation
@@ -114,10 +157,6 @@ function makeTheMath(e) {
       .replace(/\D/g, "");
   }
 }
-
-// grab the result element
-
-const outputResult = document.querySelector(".result");
 
 // Clear the whole calculator
 

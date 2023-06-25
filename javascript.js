@@ -181,6 +181,23 @@ const outputResult = document.querySelector(".result");
 // function to do the operation
 
 function makeTheMath(e) {
+  if (
+    operatorSelected !== undefined &&
+    numberOne !== undefined &&
+    numberTwo !== undefined && e.target
+  ) {
+    result = operate(operatorSelected, numberOne, numberTwo);
+    outputResult.textContent = `${result}`;
+    // numberOne = result;
+    calculatorScreenOutPut = [result];
+    numberOne = result;
+
+    numberTwo = storeOperation
+      .slice(indexOfOperator)
+      .join("")
+      .replace(/\D/g, "");
+  }
+
   if (e.target.id === "=" && numberOne != undefined && numberTwo != undefined) {
     result = operate(operatorSelected, numberOne, numberTwo);
     outputResult.textContent = `${result}`;

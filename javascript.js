@@ -1,14 +1,14 @@
 function add(numberOne, numberTwo) {
-  return parseInt(numberOne) + parseInt(numberTwo);
+  return +(parseFloat(numberOne) + parseFloat(numberTwo)).toFixed(3);
 }
 function subtract(numberOne, numberTwo) {
-  return parseInt(numberOne) - parseInt(numberTwo);
+  return +(parseFloat(numberOne) - parseFloat(numberTwo)).toFixed(3);
 }
 function multiply(numberOne, numberTwo) {
-  return parseInt(numberOne) * parseInt(numberTwo);
+  return +(parseFloat(numberOne) * parseFloat(numberTwo)).toFixed(3);
 }
 function divide(numberOne, numberTwo) {
-  return parseInt(numberOne) / parseInt(numberTwo);
+  return +(parseFloat(numberOne) / parseFloat(numberTwo)).toFixed(3);
 }
 
 // Operate function takes an operator and 2 numbers and then calls one of the above functions on the numbers.
@@ -42,7 +42,7 @@ numberButtons.forEach((button) => {
   button.addEventListener("click", (e) => {
     // console.log(e.target.id); // Get ID of Clicked Element
     updateCalculatorScreen(e);
-    getNumbers(e);
+    getNumbers();
     getOperator();
     makeTheMath(e);
     getIndexOfOperator();
@@ -59,44 +59,80 @@ let numberTwo;
 let operatorSelected;
 let indexOfOperator;
 let result;
+let newOrderOfOperation;
 
 const numbersOperated = document.querySelector(".numbersOperated");
 
 function updateCalculatorScreen(e) {
+  // Attempting to delete a number from the input
+
+  if (e.target.classList.contains("delete")) {
+    // Updates the Screen of the calculator
+    calculatorScreenOutPut = calculatorScreenOutPut.filter(
+      (value) => value != ""
+    ); // Removes empty strings by filtering through them
+
+    calculatorScreenOutPut = calculatorScreenOutPut.slice(
+      0,
+      calculatorScreenOutPut.length - 1
+    );
+
+    storeOperation = storeOperation.slice(0, storeOperation - 1);
+
+    storeOperation = storeOperation.filter((value) => value != ""); // Removes empty strings by filtering through them
+  }
+
+  // Push values onto calculatorScreenOutPut
   if (e.target.id !== "=") calculatorScreenOutPut.push(e.target.id);
 
   storeOperation = calculatorScreenOutPut;
+
+  // Second test for the number one variable
+
+  storeOperation = storeOperation.filter((value) => value != ""); // Removes empty strings
+
+  /* update screen function
+   * Currently working on having it separate the variables and have it look better
+   */
+
   numbersOperated.textContent = calculatorScreenOutPut.join(""); // Output to calculator screen
+  deleteANumber(e);
 }
+
+// Deletes a number if the the user clicks on the delete button
+
+function deleteANumber(e) {
+  if (e.target.classList.contains("delete") && operatorSelected === undefined) {
+    numberOne = storeOperation.join(""); // Updates the numberOne variable immediately with the new value of storeOperation
+  }
+
+  if (e.target.classList.contains("delete") && operatorSelected !== undefined) {
+    numberTwo = storeOperation
+      .slice(indexOfOperator)
+      .join("")
+      .replace(/\D/g, ""); // Updates the numberOne variable immediately with the new value of storeOperation
+  }
+}
+
+// Output to calculator screen
 
 // Getting the index of the operator so i can know where to cut the numbers at
 
 // Function to get the numbers
 
-function getNumbers(e) {
-  if (
-    e.target.id === "*" ||
-    e.target.id === "+" ||
-    e.target.id === "-" ||
-    e.target.id === "/"
-  ) {
+function getNumbers() {
+  if (operatorSelected !== undefined) {
     numberOne = storeOperation.slice(0, indexOfOperator).join("");
+  } else if (operatorSelected === undefined) {
+    numberOne = storeOperation.join("").replace(/\D/g, "");
   }
 
-  if (
-    numberOne !== undefined &&
-    (storeOperation[indexOfOperator] === "*" ||
-      storeOperation[indexOfOperator] === "/" ||
-      storeOperation[indexOfOperator] === "+" ||
-      storeOperation[indexOfOperator] === "-")
-  ) {
+  if (numberOne !== undefined && operatorSelected !== undefined) {
     numberTwo = storeOperation
       .slice(indexOfOperator)
       .join("")
       .replace(/\D/g, "");
   }
-
-
 }
 
 // function to get the index of the operator symbol
@@ -173,5 +209,11 @@ function clear(e) {
     numberOne = undefined; // Variables for the calculator
     numberTwo = undefined;
     indexOfOperator = undefined;
+    operatorSelected = undefined;
   }
 }
+
+/*Function to delete a part of the operation without deleting the whole thing*/
+const deleteButton = document.querySelector(".delete");
+
+deleteButton.addEventListener("click", (e) => updateCalculatorScreen(e));

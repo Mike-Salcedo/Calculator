@@ -26,8 +26,8 @@ body {
   background-color: #ececec;
 }
 .container {
-  border: 3px solid black;
-  height: 690px;
+  border: 4px solid black;
+  height: 708px;
   width: 390px;
   display: flex;
   flex-direction: column;

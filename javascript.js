@@ -41,11 +41,12 @@ numberButtons.forEach((button) => {
   // and for each one we add a 'click' listener
   button.addEventListener("click", (e) => {
     // console.log(e.target.id); // Get ID of Clicked Element
+
     updateCalculatorScreen(e);
     getNumbers();
     getOperator();
-    makeTheMath(e);
     getIndexOfOperator();
+    makeTheMath(e);
   });
 });
 
@@ -54,7 +55,7 @@ numberButtons.forEach((button) => {
 // Target numbersOperated p tags
 let calculatorScreenOutPut = [];
 let storeOperation;
-let numberOne; // Variables for the calculator
+let numberOne = []; // Variables for the calculator
 let numberTwo;
 let operatorSelected;
 let indexOfOperator;
@@ -125,6 +126,7 @@ function getNumbers() {
     numberOne = storeOperation.slice(0, indexOfOperator).join("");
   } else if (operatorSelected === undefined) {
     numberOne = storeOperation.join("").replace(/\D/g, "");
+    // numberOne.filter((value) => +value);
   }
 
   if (numberOne !== undefined && operatorSelected !== undefined) {
@@ -141,21 +143,6 @@ function getIndexOfOperator() {
   if (numberOne !== undefined) {
     indexOfOperator = storeOperation.indexOf(operatorSelected);
   }
-
-  // return (indexOfOperator = storeOperation
-  //   .map((element) => {
-  //     if (
-  //       element === "*" ||
-  //       element === "/" ||
-  //       element === "+" ||
-  //       element === "-"
-  //     ) {
-  //       return operatorSelected.indexOf(element);
-  //     }
-  //   })
-  //   .filter((element) => {
-  //     return element != undefined;
-  //   }));
 }
 
 // function to get operator
@@ -180,34 +167,31 @@ operatorSelected = getOperator();
 const outputResult = document.querySelector(".result");
 // function to do the operation
 
+// filter through the stored operation
+
 function makeTheMath(e) {
+  // Second if condition test works if the user clicks on equals
+
+  const test = e.target.id;
+
   if (
-    operatorSelected !== undefined &&
+    test === "=" &&
     numberOne !== undefined &&
-    numberTwo !== undefined && e.target
+    numberTwo !== undefined &&
+    operatorSelected !== undefined
   ) {
     result = operate(operatorSelected, numberOne, numberTwo);
+
     outputResult.textContent = `${result}`;
-    // numberOne = result;
+    numberOne = storeOperation.slice(0, indexOfOperator);
+    numberOne.filter((value) => +value);
+
+    // storeOperation = [];
+
     calculatorScreenOutPut = [result];
-    numberOne = result;
+    storeOperation = calculatorScreenOutPut;
 
-    numberTwo = storeOperation
-      .slice(indexOfOperator)
-      .join("")
-      .replace(/\D/g, "");
-  }
-
-  if (e.target.id === "=" && numberOne != undefined && numberTwo != undefined) {
-    result = operate(operatorSelected, numberOne, numberTwo);
-    outputResult.textContent = `${result}`;
-    // numberOne = result;
-    calculatorScreenOutPut = [result];
-
-    numberTwo = storeOperation
-      .slice(indexOfOperator)
-      .join("")
-      .replace(/\D/g, "");
+    numberTwo = undefined;
   }
 }
 

@@ -101,7 +101,7 @@ function deleteANumber(e) {
 
 function getNumbers() {
   // Function to get the numbers checks if certain variables have values and updates the numbers according to if they do or don't
-  if (indexOfOperator !== "") {
+  if (operatorSelected !== "") {
     numberOne = storeOperation.slice(0, indexOfOperator).join("");
   } else {
     numberOne = storeOperation.join("").replace(/\D/g, "");
@@ -161,7 +161,8 @@ function makeTheMath(e) {
     (buttonClicked === "/" ||
       buttonClicked === "*" ||
       buttonClicked === "-" ||
-      buttonClicked === "+") &&
+      buttonClicked === "+" ||
+      buttonClicked === "=") &&
     numberOne !== [] &&
     numberTwo !== "" &&
     operatorSelected !== ""
@@ -181,60 +182,18 @@ function makeTheMath(e) {
     ) {
       calculatorScreenOutPut.push(tempVariable[i]);
     }
-    calculatorScreenOutPut.push(buttonClicked);
+    if (buttonClicked !== "=") calculatorScreenOutPut.push(buttonClicked);
+    // numbersOperated.textContent = calculatorScreenOutPut.join(""); // Output to calculator screen
 
-    console.log(tempVariable);
-    numberOne = tempVariable;
-    console.log({ numberOne });
+    // numberOne = [];
+    indexOfOperator = "";
     numberTwo = "";
     operatorSelected = "";
+
     result = "";
   }
 
   /* Trying to set it up so multiple operations can be stringed together without messing it up*/
-
-  if (
-    // Only runs if user has all numbers and hits equals
-    buttonClicked === "=" &&
-    numberOne !== [] &&
-    numberTwo !== "" &&
-    operatorSelected !== ""
-  ) {
-    if (numberOne == 0 && numberTwo == 0 && operatorSelected == "/") {
-      // Condition if user tries to divide by zero
-      calculatorScreenOutPut = [];
-      storeOperation = [];
-      operatorSelected = "";
-      indexOfOperator = "";
-      numberOne = [];
-      numberTwo = "";
-      numbersOperated.textContent = "";
-      return (outputResult.textContent = "NARWHALES");
-    }
-
-    result = operate(operatorSelected, numberOne, numberTwo);
-
-    outputResult.textContent = `${result}`;
-
-    const tempVariable = Array.from(result.toString());
-
-    calculatorScreenOutPut = [];
-
-    for (
-      let i = 0;
-      i < tempVariable.length;
-      i++ // Loops through result and pushes the values onto Calculator screen output
-    ) {
-      calculatorScreenOutPut.push(tempVariable[i]);
-    }
-
-    console.log(tempVariable);
-    numberOne = tempVariable;
-    console.log({ numberOne });
-    numberTwo = "";
-    operatorSelected = "";
-    result = "";
-  }
 }
 
 // Clear the whole calculator

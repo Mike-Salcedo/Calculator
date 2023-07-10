@@ -43,9 +43,9 @@ numberButtons.forEach((button) => {
     // console.log(e.target.id); // Get ID of Clicked Element
 
     updateCalculatorScreen(e);
-    getNumbers();
-    getOperator();
-    getIndexOfOperator();
+    // getNumbers();
+    // getOperator();
+    // getIndexOfOperator();
     makeTheMath(e);
   });
 });
@@ -54,25 +54,40 @@ numberButtons.forEach((button) => {
 
 // Target numbersOperated p tags
 let calculatorScreenOutPut = [];
-let storeOperation;
+let storeOperation = [];
 let numberOne = []; // Variables for the calculator
-let numberTwo;
-let operatorSelected;
-let indexOfOperator;
-let result;
-let newOrderOfOperation;
+let numberTwo = "";
+let operatorSelected = "";
+let indexOfOperator = "";
+let result = "";
 
 const numbersOperated = document.querySelector(".numbersOperated");
 
 function updateCalculatorScreen(e) {
-  // Attempting to delete a number from the input
+  deleteANumber(e);
 
-  if (e.target.classList.contains("delete")) {
-    // Updates the Screen of the calculator
-    calculatorScreenOutPut = calculatorScreenOutPut.filter(
-      (value) => value != ""
-    ); // Removes empty strings by filtering through them
+  const buttonClicked = e.target.id;
 
+  // Push values onto calculatorScreenOutPut
+  if (buttonClicked !== "=") calculatorScreenOutPut.push(buttonClicked);
+
+  storeOperation = calculatorScreenOutPut.filter((value) => value != ""); // Removes empty strings
+
+  /* update screen function
+   * Currently working on having it separate the variables and have it look better
+   */
+
+  numbersOperated.textContent = calculatorScreenOutPut.join(""); // Output to calculator screen
+  getNumbers();
+  getOperator();
+  getIndexOfOperator();
+}
+
+function deleteANumber(e) {
+  // Deletes a number if the the user clicks on the delete button
+  const buttonClicked = e.target.classList;
+
+  if (buttonClicked.contains("delete")) {
     calculatorScreenOutPut = calculatorScreenOutPut.slice(
       0,
       calculatorScreenOutPut.length - 1
@@ -82,54 +97,17 @@ function updateCalculatorScreen(e) {
 
     storeOperation = storeOperation.filter((value) => value != ""); // Removes empty strings by filtering through them
   }
-
-  // Push values onto calculatorScreenOutPut
-  if (e.target.id !== "=") calculatorScreenOutPut.push(e.target.id);
-
-  storeOperation = calculatorScreenOutPut;
-
-  // Second test for the number one variable
-
-  storeOperation = storeOperation.filter((value) => value != ""); // Removes empty strings
-
-  /* update screen function
-   * Currently working on having it separate the variables and have it look better
-   */
-
-  numbersOperated.textContent = calculatorScreenOutPut.join(""); // Output to calculator screen
-  deleteANumber(e);
 }
-
-// Deletes a number if the the user clicks on the delete button
-
-function deleteANumber(e) {
-  if (e.target.classList.contains("delete") && operatorSelected === undefined) {
-    numberOne = storeOperation.join(""); // Updates the numberOne variable immediately with the new value of storeOperation
-  }
-
-  if (e.target.classList.contains("delete") && operatorSelected !== undefined) {
-    numberTwo = storeOperation
-      .slice(indexOfOperator)
-      .join("")
-      .replace(/\D/g, ""); // Updates the numberOne variable immediately with the new value of storeOperation
-  }
-}
-
-// Output to calculator screen
-
-// Getting the index of the operator so i can know where to cut the numbers at
-
-// Function to get the numbers
 
 function getNumbers() {
-  if (operatorSelected !== undefined) {
+  // Function to get the numbers checks if certain variables have values and updates the numbers according to if they do or don't
+  if (indexOfOperator !== "") {
     numberOne = storeOperation.slice(0, indexOfOperator).join("");
-  } else if (operatorSelected === undefined) {
+  } else {
     numberOne = storeOperation.join("").replace(/\D/g, "");
-    // numberOne.filter((value) => +value);
   }
 
-  if (numberOne !== undefined && operatorSelected !== undefined) {
+  if (numberOne !== [] && indexOfOperator !== "") {
     numberTwo = storeOperation
       .slice(indexOfOperator)
       .join("")
@@ -137,10 +115,9 @@ function getNumbers() {
   }
 }
 
-// function to get the index of the operator symbol
-
 function getIndexOfOperator() {
-  if (numberOne !== undefined) {
+  // function to get the index of the operator symbol
+  if (numberOne !== []) {
     indexOfOperator = storeOperation.indexOf(operatorSelected);
   }
 }
@@ -148,8 +125,8 @@ function getIndexOfOperator() {
 // function to get operator
 
 const getOperator = () => {
-  if (storeOperation != undefined)
-    storeOperation.filter((element) => {
+  if (storeOperation != "")
+    storeOperation.find((element) => {
       if (
         element === "*" ||
         element === "/" ||
@@ -172,26 +149,91 @@ const outputResult = document.querySelector(".result");
 function makeTheMath(e) {
   // Second if condition test works if the user clicks on equals
 
-  const test = e.target.id;
+  const buttonClicked = e.target.id;
+
+  if (buttonClicked === "=" && numberTwo === "") {
+    return (outputResult.textContent = "Missing Numbers");
+  } // Incase user clicks on equals without having an operator or second number
+
+  /* Trying to set it up so multiple operations can be stringed together without messing it up*/
 
   if (
-    test === "=" &&
-    numberOne !== undefined &&
-    numberTwo !== undefined &&
-    operatorSelected !== undefined
+    (buttonClicked === "/" ||
+      buttonClicked === "*" ||
+      buttonClicked === "-" ||
+      buttonClicked === "+") &&
+    numberOne !== [] &&
+    numberTwo !== "" &&
+    operatorSelected !== ""
   ) {
     result = operate(operatorSelected, numberOne, numberTwo);
 
     outputResult.textContent = `${result}`;
-    numberOne = storeOperation.slice(0, indexOfOperator);
-    numberOne.filter((value) => +value);
 
-    // storeOperation = [];
+    const tempVariable = Array.from(result.toString());
 
-    calculatorScreenOutPut = [result];
-    storeOperation = calculatorScreenOutPut;
+    calculatorScreenOutPut = [];
 
-    numberTwo = undefined;
+    for (
+      let i = 0;
+      i < tempVariable.length;
+      i++ // Loops through result and pushes the values onto Calculator screen output
+    ) {
+      calculatorScreenOutPut.push(tempVariable[i]);
+    }
+    calculatorScreenOutPut.push(buttonClicked);
+
+    console.log(tempVariable);
+    numberOne = tempVariable;
+    console.log({ numberOne });
+    numberTwo = "";
+    operatorSelected = "";
+    result = "";
+  }
+
+  /* Trying to set it up so multiple operations can be stringed together without messing it up*/
+
+  if (
+    // Only runs if user has all numbers and hits equals
+    buttonClicked === "=" &&
+    numberOne !== [] &&
+    numberTwo !== "" &&
+    operatorSelected !== ""
+  ) {
+    if (numberOne == 0 && numberTwo == 0 && operatorSelected == "/") {
+      // Condition if user tries to divide by zero
+      calculatorScreenOutPut = [];
+      storeOperation = [];
+      operatorSelected = "";
+      indexOfOperator = "";
+      numberOne = [];
+      numberTwo = "";
+      numbersOperated.textContent = "";
+      return (outputResult.textContent = "NARWHALES");
+    }
+
+    result = operate(operatorSelected, numberOne, numberTwo);
+
+    outputResult.textContent = `${result}`;
+
+    const tempVariable = Array.from(result.toString());
+
+    calculatorScreenOutPut = [];
+
+    for (
+      let i = 0;
+      i < tempVariable.length;
+      i++ // Loops through result and pushes the values onto Calculator screen output
+    ) {
+      calculatorScreenOutPut.push(tempVariable[i]);
+    }
+
+    console.log(tempVariable);
+    numberOne = tempVariable;
+    console.log({ numberOne });
+    numberTwo = "";
+    operatorSelected = "";
+    result = "";
   }
 }
 
@@ -203,18 +245,19 @@ clearButton.addEventListener("click", (e) => clear(e));
 
 function clear(e) {
   if (e.target.classList.contains("clear")) {
-    outputResult.textContent = "";
-    numbersOperated.textContent = "0";
+    outputResult.textContent = "0";
+    numbersOperated.textContent = "";
     calculatorScreenOutPut = [];
-    storeOperation = undefined;
-    numberOne = undefined; // Variables for the calculator
-    numberTwo = undefined;
-    indexOfOperator = undefined;
-    operatorSelected = undefined;
+    storeOperation = "";
+    numberOne = ""; // Variables for the calculator
+    numberTwo = "";
+    indexOfOperator = "";
+    operatorSelected = "";
+    result = "";
   }
 }
 
 /*Function to delete a part of the operation without deleting the whole thing*/
 const deleteButton = document.querySelector(".delete");
 
-deleteButton.addEventListener("click", (e) => updateCalculatorScreen(e));
+deleteButton.addEventListener("click", (e) => deleteANumber(e));

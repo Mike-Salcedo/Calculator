@@ -109,8 +109,8 @@ div.topBtns {
   height: 20%;
 }
 
-button.clear,
-button.delete {
+button.clear.calculatorBtn,
+button.delete.calculatorBtn {
   flex: 1 1 50%;
   padding: 1.5rem;
   /*Styles for buttons*/

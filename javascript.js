@@ -50,8 +50,6 @@ numberButtons.forEach((button) => {
   });
 });
 
-//Functions that populate the display when you click the number buttons
-
 // Target numbersOperated p tags
 let calculatorScreenOutPut = [];
 let storeOperation = [];
@@ -64,20 +62,17 @@ let result = "";
 const numbersOperated = document.querySelector(".numbersOperated");
 
 function updateCalculatorScreen(e) {
+  //Functions that populate the display when you click the number buttons
   deleteANumber(e);
 
   const buttonClicked = e.target.id;
 
-  // Push values onto calculatorScreenOutPut
-  if (buttonClicked !== "=") calculatorScreenOutPut.push(buttonClicked);
+  if (buttonClicked !== "=") calculatorScreenOutPut.push(buttonClicked); // Push values onto calculatorScreenOutPut
 
   storeOperation = calculatorScreenOutPut.filter((value) => value != ""); // Removes empty strings
 
-  /* update screen function
-   * Currently working on having it separate the variables and have it look better
-   */
-
   numbersOperated.textContent = calculatorScreenOutPut.join(""); // Output to calculator screen
+
   getNumbers();
   getOperator();
   getIndexOfOperator();
@@ -104,14 +99,14 @@ function getNumbers() {
   if (operatorSelected !== "") {
     numberOne = storeOperation.slice(0, indexOfOperator).join("");
   } else {
-    numberOne = storeOperation.join("").replace(/\D/g, "");
+    numberOne = storeOperation.join("").replace(/[^0-9.]+/g, "");
   }
 
   if (numberOne !== [] && indexOfOperator !== "") {
     numberTwo = storeOperation
       .slice(indexOfOperator)
       .join("")
-      .replace(/\D/g, "");
+      .replace(/[^0-9.]+/g, "");
   }
 }
 
@@ -183,9 +178,10 @@ function makeTheMath(e) {
       calculatorScreenOutPut.push(tempVariable[i]);
     }
     if (buttonClicked !== "=") calculatorScreenOutPut.push(buttonClicked);
-    // numbersOperated.textContent = calculatorScreenOutPut.join(""); // Output to calculator screen
 
-    // numberOne = [];
+    if (buttonClicked !== "=")
+      numbersOperated.textContent = calculatorScreenOutPut.join(""); // Output to calculator screen
+
     indexOfOperator = "";
     numberTwo = "";
     operatorSelected = "";

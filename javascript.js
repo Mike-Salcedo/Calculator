@@ -1,3 +1,12 @@
+// Target numbersOperated p tags
+let calculatorScreenOutPut = [];
+let storeOperation = [];
+let numberOne = []; // Variables for the calculator
+let numberTwo = "";
+let operatorSelected = "";
+let indexOfOperator = "";
+let result = "";
+
 function add(numberOne, numberTwo) {
   return +(parseFloat(numberOne) + parseFloat(numberTwo)).toFixed(3);
 }
@@ -50,15 +59,6 @@ numberButtons.forEach((button) => {
   });
 });
 
-// Target numbersOperated p tags
-let calculatorScreenOutPut = [];
-let storeOperation = [];
-let numberOne = []; // Variables for the calculator
-let numberTwo = "";
-let operatorSelected = "";
-let indexOfOperator = "";
-let result = "";
-
 const numbersOperated = document.querySelector(".numbersOperated");
 
 function updateCalculatorScreen(e) {
@@ -67,11 +67,37 @@ function updateCalculatorScreen(e) {
 
   const buttonClicked = e.target.id;
 
+  /*Code to check for decimal points*/
+
+  /*
+  This code checks if a number has a decimal point already "." If True it won't update the appropriate number variable 
+  
+  */
+
+  let checkForDecimalOne = Array.from(numberOne);
+  let checkForDecimalTwo = Array.from(numberTwo);
+
+  checkForDecimalOne = checkForDecimalOne
+    .map((element) => element === ".")
+    .find((element) => element == true);
+
+  checkForDecimalTwo = checkForDecimalTwo
+    .map((element) => element === ".")
+    .find((element) => element == true);
+
+  if (buttonClicked === "." && checkForDecimalOne && numberTwo === "") return;
+
+  if (buttonClicked === "." && checkForDecimalTwo && numberTwo !== "") return;
+
+  /*Code to check for decimal points*/
+
   if (buttonClicked !== "=") calculatorScreenOutPut.push(buttonClicked); // Push values onto calculatorScreenOutPut
 
   storeOperation = calculatorScreenOutPut.filter((value) => value != ""); // Removes empty strings
 
   numbersOperated.textContent = calculatorScreenOutPut.join(""); // Output to calculator screen
+
+  /**/
 
   getNumbers();
   getOperator();
@@ -102,7 +128,7 @@ function getNumbers() {
     numberOne = storeOperation.join("").replace(/[^0-9.]+/g, "");
   }
 
-  if (numberOne !== [] && indexOfOperator !== "") {
+  if (numberOne !== [] && operatorSelected !== "") {
     numberTwo = storeOperation
       .slice(indexOfOperator)
       .join("")
@@ -131,8 +157,6 @@ const getOperator = () => {
         return (operatorSelected = element);
     });
 };
-
-operatorSelected = getOperator();
 
 // grab the result element
 

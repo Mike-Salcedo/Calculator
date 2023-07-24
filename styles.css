@@ -18,13 +18,13 @@ html {
 }
 
 body {
-  height: 100vh;
+  height: 80vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 13%;
   align-items: center;
-  padding-top: 12%;
+  padding-top: 25%;
   margin: 0;
   background-color: #e9cbfa;
 }
@@ -129,6 +129,7 @@ div.bottomBtns {
 
   width: 100%;
   height: 453px;
+  /* height: 100%; */
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
@@ -136,7 +137,7 @@ div.bottomBtns {
 
 button.calculatorBtn {
   flex: 1 1 25%;
-  height: 25%;
+
   /*Styles for buttons*/
 
   background-color: #ffffff;

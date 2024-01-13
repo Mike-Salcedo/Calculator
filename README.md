@@ -1,4 +1,4 @@
- ## Calculator: Crunching Numbers with Clarity
+ ## 🧮Calculator: Crunching Numbers with Clarity
 
 **Key Features:**
 
